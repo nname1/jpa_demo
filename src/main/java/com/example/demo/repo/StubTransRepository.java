@@ -1,9 +1,12 @@
 package com.example.demo.repo;
 
+import com.example.demo.entity.EventTransDTO;
 import com.example.demo.entity.Stub_trans;
 import com.example.demo.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +14,6 @@ import java.util.Optional;
 public interface StubTransRepository extends CrudRepository<Stub_trans,Long>, JpaSpecificationExecutor {
 
     Optional<List<Stub_trans>> findByTicketId(Long ticketId);
+    @Query(nativeQuery=true)
+    List<EventTransDTO> findAllTransByEventId(@Param("eventId") Long eventId);
 }

@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "TICKETS")
-@SecondaryTable(name="STUB_TRANS",pkJoinColumns=@PrimaryKeyJoinColumn(name="TICKET_ID"))
 public class Ticket {
 
     @Id
@@ -30,8 +29,5 @@ public class Ticket {
 
     @Column(name = "SYSTEM_STATUS")
     private String status;
-
-    @Column(table = "STUB_TRANS", name="ID")
-    private Long transId;
 
 }

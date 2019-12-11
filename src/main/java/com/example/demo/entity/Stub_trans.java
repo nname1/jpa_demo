@@ -4,6 +4,23 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+@SqlResultSetMapping(
+        name = "EventTransDTO",
+        classes = {
+                @ConstructorResult(
+                        targetClass = EventTransDTO.class,
+                        columns = {
+                                @ColumnResult(name = "eventId", type = Long.class),
+                                @ColumnResult(name = "transId", type = Long.class)
+                        }
+                )
+        }
+)
+@NamedNativeQuery(
+        name = "Stub_trans.findAllTransByEventId",
+        query = "select st.ID as transId,t.event_id as eventId from stub_trans st, tickets t where st.TICKET_ID = t.id and t.event_id= :eventId",
+        resultSetMapping = "EventTransDTO"
+)
 @Data
 @Entity
 public class Stub_trans {
@@ -16,10 +33,6 @@ public class Stub_trans {
     @Column(name = "BUYER_ID")
     private Long buyerId;
 
-    @PrimaryKeyJoinColumn
-    @Column(name = "TICKET_ID")
-    private Long ticketId;
-
     @Column(name = "QUANTITY")
     private int quantity;
 
@@ -29,4 +42,7 @@ public class Stub_trans {
     @Column(name = "SELLER_ID")
     private Long sellerId;
 
+    @ManyToOne
+    @JoinColumn(name = "ticket_id",insertable = false, updatable = false)
+    private Ticket ticket;
 }
