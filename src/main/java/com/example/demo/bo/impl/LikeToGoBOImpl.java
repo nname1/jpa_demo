@@ -4,11 +4,8 @@ import com.example.demo.bo.LikeToGoBO;
 import com.example.demo.dto.EventLikeToGoDTO;
 import com.example.demo.entity.CatalogType;
 import com.example.demo.exception.LikeToGoException;
-import com.example.demo.repo.StubTransRepository;
+import com.example.demo.dao.StubTransDAO;
 import com.example.demo.util.TestBean;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -18,7 +15,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,11 +36,11 @@ public class LikeToGoBOImpl implements LikeToGoBO {
     private TestBean testBean;
 
     @Autowired
-    private StubTransRepository stubTransRepository;
+    private StubTransDAO stubTransDAO;
 
     @Override
     public EventLikeToGoDTO getLikeToGoByEventId(String eventId) throws LikeToGoException {
-        return stubTransRepository.findEventLikeToGo(eventId);
+        return stubTransDAO.findEventLikeToGo(eventId);
     }
 
     @Override

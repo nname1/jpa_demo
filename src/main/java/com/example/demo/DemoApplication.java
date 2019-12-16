@@ -1,11 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.dto.EventLikeToGoDTO;
-import com.example.demo.dto.EventTransDTO;
-import com.example.demo.entity.Event;
-import com.example.demo.repo.EventRepository;
-import com.example.demo.repo.StubTransRepository;
-import com.example.demo.util.PropertyUtils;
+import com.example.demo.dao.StubTransDAO;
 import com.example.demo.util.TestBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,9 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.util.Date;
-import java.util.List;
-@EnableJpaRepositories(basePackages={"com.example.demo.repo"})
+@EnableJpaRepositories(basePackages={"com.example.demo.dao"})
 @SpringBootApplication
 public class DemoApplication {
 
@@ -71,7 +65,7 @@ public class DemoApplication {
     private TestBean testBean;
 
     @Bean
-    public CommandLineRunner demo4(StubTransRepository repository){
+    public CommandLineRunner demo4(StubTransDAO repository){
         return (args) -> {
             System.out.println(env.getProperty("test.env"));
             EventLikeToGoDTO eventLikeToGoDTO = repository.findEventLikeToGo("104094671");
