@@ -1,7 +1,10 @@
 package com.example.demo.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.*;
 
+@Component
 public class PoolService {
 
     public ExecutorService getPool(){

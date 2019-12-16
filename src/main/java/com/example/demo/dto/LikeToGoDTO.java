@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikeToGoDTO {
-    private String performerId;
+    private String catalogId;
     private List<EventLikeToGoDTO> eventLikeToGoList;
 }

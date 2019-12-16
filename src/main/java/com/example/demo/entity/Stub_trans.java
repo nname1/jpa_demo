@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.EventLikeToGoDTO;
+import com.example.demo.dto.EventTransDTO;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,6 +22,23 @@ import javax.persistence.*;
         name = "Stub_trans.findAllTransByEventId",
         query = "select st.ID as transId,t.event_id as eventId from stub_trans st, tickets t where st.TICKET_ID = t.id and t.event_id= :eventId",
         resultSetMapping = "EventTransDTO"
+)
+@SqlResultSetMapping(
+        name = "EventLikeToGoDTO",
+        classes = {
+                @ConstructorResult(
+                        targetClass = EventLikeToGoDTO.class,
+                        columns = {
+                                @ColumnResult(name = "eventId", type = String.class),
+                                @ColumnResult(name = "likeToGoCount", type = int.class)
+                        }
+                )
+        }
+)
+@NamedNativeQuery(
+        name = "Stub_trans.findEventLikeToGo",
+        query = "select count(st.ID) as likeToGoCount,:eventId as eventId from stub_trans st, tickets t where st.TICKET_ID = t.id and t.event_id= :eventId",
+        resultSetMapping = "EventLikeToGoDTO"
 )
 @Data
 @Entity

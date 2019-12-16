@@ -1,19 +1,23 @@
 package com.example.demo.repo;
 
-import com.example.demo.entity.EventTransDTO;
+import com.example.demo.dto.EventLikeToGoDTO;
+import com.example.demo.dto.EventTransDTO;
 import com.example.demo.entity.Stub_trans;
-import com.example.demo.entity.Ticket;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface StubTransRepository extends CrudRepository<Stub_trans,Long>, JpaSpecificationExecutor {
+@Repository
+public interface StubTransRepository extends CrudRepository<Stub_trans,Long>{
 
     Optional<List<Stub_trans>> findByTicketId(Long ticketId);
     @Query(nativeQuery=true)
-    List<EventTransDTO> findAllTransByEventId(@Param("eventId") Long eventId);
+    List<EventTransDTO> findAllTransByEventId(@Param("eventId") String eventId);
+
+    @Query(nativeQuery=true)
+    EventLikeToGoDTO findEventLikeToGo(@Param("eventId") String eventId);
 }

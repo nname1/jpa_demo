@@ -4,6 +4,7 @@ package com.example.demo.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -22,6 +23,10 @@ public class Event {
 
     @Column(name = "NAME")
     private String name;
+
+    @Column(name = "CREATED_DATE")
+    @Temporal(value = TemporalType.DATE)
+    private Date createdDate;
 
     protected Event(){
 
