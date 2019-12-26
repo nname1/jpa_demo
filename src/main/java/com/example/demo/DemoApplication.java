@@ -2,6 +2,8 @@ package com.example.demo;
 
 import com.example.demo.dto.EventLikeToGoDTO;
 import com.example.demo.dao.StubTransDAO;
+import com.example.demo.dto.EventTransDTO;
+import com.example.demo.entity.Stub_trans;
 import com.example.demo.util.TestBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -9,7 +11,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import javax.persistence.criteria.Predicate;
+import java.util.List;
 
 @EnableJpaRepositories(basePackages={"com.example.demo.dao"})
 @SpringBootApplication
@@ -49,14 +57,36 @@ public class DemoApplication {
         };
     }*/
     /*@Bean
-    public CommandLineRunner demo3(StubTransRepository repository){
+    public CommandLineRunner demo3(StubTransDAO repository){
         return (args) -> {
-            List<EventTransDTO> stub_transList = repository.findAllTransByEventId(104094671L);
+            List<EventTransDTO> stub_transList = repository.findAllTransByEventId("104094671");
             for(EventTransDTO stub_trans : stub_transList) {
                 System.out.println(stub_trans.getTransId());
             }
         };
     }*/
+
+    @Bean
+    public CommandLineRunner demo5(StubTransDAO repository){
+        return (args) -> {
+            List<Stub_trans> stList = repository.findAll((root,query,criteriaBuilder) -> {
+                Predicate predicate = criteriaBuilder.equal(root.get("id"),"247651551");
+                return predicate;
+            });
+            for(Stub_trans st : stList){
+                System.out.println("id is "+st.getId());
+                System.out.println("buyer id is "+st.getBuyerId());
+            }
+            Pageable pageable = PageRequest.of(0,10);
+            Page<Stub_trans> stPage = repository.findAll((root, query, criteriaBuilder) -> {
+                Predicate predicate = criteriaBuilder.between(root.get("id").as(Integer.class),247651551,247651651);
+                return predicate;
+            }, pageable);
+            System.out.println(stPage.getContent()); //得到数据集合列表
+            System.out.println(stPage.getTotalElements());//得到总条数
+            System.out.println(stPage.getTotalPages());//得到总页数
+        };
+    }
 
     @Autowired
     private Environment env;
@@ -67,7 +97,7 @@ public class DemoApplication {
     @Bean
     public CommandLineRunner demo4(StubTransDAO repository){
         return (args) -> {
-            System.out.println(env.getProperty("test.env"));
+            System.out.println(env.getProperty("test.url"));
             EventLikeToGoDTO eventLikeToGoDTO = repository.findEventLikeToGo("104094671");
             System.out.println(eventLikeToGoDTO.getLikeToGoCount());
             System.out.println(eventLikeToGoDTO.getEventId());
